@@ -1,0 +1,199 @@
+<style>
+@keyframes sproutUp{0%{opacity:0;transform:scaleY(0)}70%{transform:scaleY(1.12)}to{opacity:1;transform:scaleY(1)}}
+@keyframes bloomIn{0%{opacity:0;transform:scale(0)}65%{transform:scale(1.2)}to{opacity:1;transform:scale(1)}}
+@keyframes capyBounce{0%,to{transform:translateY(0)}35%{transform:translateY(-10px)}65%{transform:translateY(-4px)}}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0)}to{opacity:0;transform:translateY(400px) rotate(720deg)}}
+@keyframes pulse{0%,to{box-shadow:0 0 0 0 rgba(92,168,94,.35)}50%{box-shadow:0 0 0 8px rgba(92,168,94,0)}}
+.pGrow{transform-box:fill-box;transform-origin:bottom;animation:sproutUp .7s cubic-bezier(.34,1.56,.64,1) forwards}
+.pBloom{transform-box:fill-box;transform-origin:center;animation:bloomIn .5s .45s cubic-bezier(.34,1.56,.64,1) both}
+#fcBtn:not(:disabled){animation:pulse 2.2s ease infinite}
+#fcBtn:not(:disabled):hover{filter:brightness(1.08);transform:scale(1.04)!important}
+#fcBtn:not(:disabled):active{transform:scale(.93)!important;animation:none!important}
+</style>
+
+<div style="padding:4px">
+<div style="background:#FFFBF0;border-radius:24px;border:.5px solid #E8D5B0;padding:20px 16px 18px;position:relative;overflow:hidden">
+
+<div id="fcConfetti" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden"></div>
+
+<div style="text-align:center;margin-bottom:14px">
+  <div style="font-size:18px;font-weight:500;color:#4A3728">🌱 Odak Kaptanı</div>
+  <div id="fcSub" style="font-size:12px;color:#9B7934;margin-top:3px">Görevlerin seni bekliyor!</div>
+</div>
+
+<div style="display:flex;align-items:flex-end;justify-content:center;gap:10px;margin-bottom:16px">
+  <div id="fcSpeech" style="background:white;border:.5px solid #E0D0B0;border-radius:14px 14px 4px 14px;padding:10px 13px;max-width:155px;font-size:12px;line-height:1.5;color:#4A3728">Hadi başlayalım! Sen yapabilirsin! 🌱</div>
+  <div id="fcCapy" style="flex-shrink:0">
+    <svg viewBox="0 0 90 92" width="90" height="92">
+      <ellipse cx="45" cy="76" rx="32" ry="15" fill="#8D6830"/>
+      <ellipse cx="45" cy="44" rx="28" ry="26" fill="#9B7934"/>
+      <rect x="26" y="50" width="38" height="22" rx="14" fill="#7D5820"/>
+      <ellipse cx="36" cy="62" rx="4.5" ry="3.5" fill="#5A3810"/>
+      <ellipse cx="54" cy="62" rx="4.5" ry="3.5" fill="#5A3810"/>
+      <circle cx="33" cy="37" r="6.5" fill="#1A0F08"/>
+      <circle cx="57" cy="37" r="6.5" fill="#1A0F08"/>
+      <circle cx="31" cy="35" r="2.5" fill="white" opacity=".85"/>
+      <circle cx="55" cy="35" r="2.5" fill="white" opacity=".85"/>
+      <circle cx="71" cy="17" r="4.5" fill="#FF9080"/>
+      <circle cx="71" cy="17" r="2.2" fill="#FFD040"/>
+      <circle cx="77" cy="13" r="3.5" fill="#FF9080" opacity=".75"/>
+      <circle cx="77" cy="21" r="3.5" fill="#FF9080" opacity=".75"/>
+      <circle cx="65" cy="12" r="3.5" fill="#FF9080" opacity=".75"/>
+      <circle cx="65" cy="22" r="3.5" fill="#FF9080" opacity=".75"/>
+      <ellipse cx="26" cy="20" rx="9" ry="7" fill="#7D5820" transform="rotate(-15 26 20)"/>
+      <ellipse cx="64" cy="20" rx="9" ry="7" fill="#7D5820" transform="rotate(15 64 20)"/>
+      <ellipse cx="26" cy="20" rx="5.5" ry="3.5" fill="#C09050" opacity=".4" transform="rotate(-15 26 20)"/>
+      <ellipse cx="64" cy="20" rx="5.5" ry="3.5" fill="#C09050" opacity=".4" transform="rotate(15 64 20)"/>
+      <ellipse cx="28" cy="87" rx="11" ry="5" fill="#7D5820"/>
+      <ellipse cx="62" cy="87" rx="11" ry="5" fill="#7D5820"/>
+    </svg>
+  </div>
+</div>
+
+<div style="margin-bottom:16px">
+  <div style="display:flex;justify-content:space-between;font-size:11px;color:#9B7934;margin-bottom:4px">
+    <span>İlerleme</span><span id="fcFrac">0 / 5</span>
+  </div>
+  <div style="height:7px;background:#EDD9B5;border-radius:4px;overflow:hidden">
+    <div id="fcBar" style="height:100%;background:#6BBF74;border-radius:4px;width:0%;transition:width .5s ease"></div>
+  </div>
+</div>
+
+<div id="fcPots" style="display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-bottom:18px;align-items:flex-end;min-height:120px"></div>
+
+<div style="text-align:center;margin-bottom:14px">
+  <button id="fcBtn" onclick="fcDoTask()" style="background:#5CA85E;color:white;border:none;border-radius:50px;padding:14px 28px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:transform .15s,filter .15s">✓ Görevi Tamamladım!</button>
+</div>
+
+<div style="text-align:center">
+  <button onclick="fcToggleTeacher()" style="background:none;border:.5px solid #D0B890;border-radius:20px;padding:6px 16px;font-size:12px;color:#9B7934;cursor:pointer;font-family:var(--font-sans)">⚙ Öğretmen Ayarları</button>
+</div>
+
+<div id="fcTeacher" style="display:none;margin-top:12px;background:rgba(255,243,224,.9);border-radius:14px;border:.5px solid #E8D5B0;padding:14px 12px">
+  <div style="font-size:13px;font-weight:500;color:#4A3728;margin-bottom:10px">Hedef Belirle</div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+    <label style="font-size:13px;color:#6B5030">Görev sayısı (1–10):</label>
+    <input id="fcTaskN" type="number" min="1" max="10" value="5" style="width:55px;border-radius:8px;border:.5px solid #D0B890;padding:6px 8px;font-size:14px;color:#4A3728;background:white;font-family:var(--font-sans)">
+  </div>
+  <button onclick="fcApply()" style="background:#7D6030;color:white;border:none;border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;font-family:var(--font-sans)">Başlat</button>
+  <button onclick="fcReset()" style="background:none;border:.5px solid #D0B890;border-radius:20px;padding:8px 16px;font-size:13px;color:#8B6E5A;cursor:pointer;font-family:var(--font-sans);margin-left:8px">Sıfırla</button>
+</div>
+
+</div>
+</div>
+
+<script>
+var fcTotal=5,fcDone=0;
+var fcPlantTypes=['sunflower','tulip','daisy','mandarin','cherry'];
+var fcAssigned=[];
+var fcMsgs=['Hadi başlayalım! Sen yapabilirsin! 🌱','Harika! Devam et, çiçekler büyüyor! 🌿','Muhteşemsin! Bahçe canlanıyor! 🌸','Neredeyse bitti! Son hamle! ⭐','Tebrikler! Bahçen çiçek açtı! 🎉'];
+
+function fcMakePlant(type,s){
+  var cx=s/2,soil=55,stemTop=14,midY=35;
+  var col={sunflower:{p:'#FFD700',c:'#7B3F00'},tulip:{p:'#E84040',c:'#8B0020'},daisy:{p:'#FF9EB5',c:'#FFE060'},mandarin:{p:'#FF8C00',c:'#228B22'},cherry:{p:'#F4A0C0',c:'#C2185B'}}[type]||{p:'#FF9EB5',c:'#FFE060'};
+  var lc='#4CAF50',dc='#2E8040';
+  if(type==='mandarin'){
+    return '<g class="pGrow"><path d="M'+cx+' '+soil+' L'+cx+' '+(midY+2)+'" stroke="'+lc+'" stroke-width="2.5" stroke-linecap="round" fill="none"/><ellipse cx="'+cx+'" cy="'+(midY-5)+'" rx="15" ry="11" fill="'+dc+'"/></g><g class="pBloom"><circle cx="'+(cx-8)+'" cy="'+(midY-12)+'" r="5.5" fill="#FF8C00"/><circle cx="'+(cx+8)+'" cy="'+(midY-12)+'" r="5.5" fill="#FFA020"/><circle cx="'+cx+'" cy="'+(midY-19)+'" r="5.5" fill="#FF8C00"/></g>';
+  }
+  var cfg={sunflower:{n:8,rx:4.5,ry:9,pd:11},tulip:{n:6,rx:5,ry:11,pd:9},daisy:{n:8,rx:4,ry:7,pd:10},cherry:{n:6,rx:5,ry:7,pd:10}}[type]||{n:6,rx:4,ry:8,pd:10};
+  var petals='';
+  for(var i=0;i<cfg.n;i++){
+    var a=(i/cfg.n)*2*Math.PI;
+    var px=(cx+Math.cos(a)*cfg.pd).toFixed(1);
+    var py=(stemTop+Math.sin(a)*cfg.pd).toFixed(1);
+    var rot=((a*180/Math.PI)+90).toFixed(1);
+    petals+='<ellipse cx="'+px+'" cy="'+py+'" rx="'+cfg.rx+'" ry="'+cfg.ry+'" fill="'+col.p+'" transform="rotate('+rot+' '+px+' '+py+')"/>';
+  }
+  var cr=type==='sunflower'?8:6.5;
+  return '<g class="pGrow"><path d="M'+cx+' '+soil+' Q'+(cx-5)+' '+(midY+4)+' '+cx+' '+stemTop+'" stroke="'+lc+'" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="'+(cx-11)+'" cy="'+(midY+8)+'" rx="9" ry="4.5" fill="'+dc+'" transform="rotate(-40 '+(cx-11)+' '+(midY+8)+')"/></g><g class="pBloom">'+petals+'<circle cx="'+cx+'" cy="'+stemTop+'" r="'+cr+'" fill="'+col.c+'"/></g>';
+}
+
+function fcMakePot(idx,done){
+  var s=fcTotal>7?44:56,h=112,cx=s/2;
+  var plant=done?fcMakePlant(fcAssigned[idx],s):'';
+  var tl=(s*.1).toFixed(1),tr=(s*.9).toFixed(1),bl=(s*.2).toFixed(1),br=(s*.8).toFixed(1);
+  var bw=(s*.6).toFixed(1),bx=(s*.2).toFixed(1);
+  return '<svg viewBox="0 0 '+s+' '+h+'" width="'+s+'" height="'+h+'">'+plant+
+    '<text x="'+cx+'" y="51" text-anchor="middle" font-size="10" fill="#A07050" font-family="sans-serif">'+(idx+1)+'</text>'+
+    '<rect x="2" y="53" width="'+(s-4)+'" height="11" rx="5.5" fill="#D07050"/>'+
+    '<ellipse cx="'+cx+'" cy="57" rx="'+(cx-5)+'" ry="5" fill="#5D4037"/>'+
+    '<path d="M '+tl+' 64 L '+tr+' 64 L '+br+' 102 L '+bl+' 102 Z" fill="#C06040"/>'+
+    '<rect x="'+bx+'" y="101" width="'+bw+'" height="9" rx="3.5" fill="#A05030"/>'+
+    '</svg>';
+}
+
+function fcRenderPots(){
+  var box=document.getElementById('fcPots'),html='';
+  for(var i=0;i<fcTotal;i++)html+='<div id="fcp'+i+'" style="display:flex;flex-direction:column;align-items:center;">'+fcMakePot(i,i<fcDone)+'</div>';
+  box.innerHTML=html;
+}
+
+function fcUpdateUI(){
+  var pct=fcTotal>0?fcDone/fcTotal:0;
+  document.getElementById('fcBar').style.width=Math.round(pct*100)+'%';
+  document.getElementById('fcFrac').textContent=fcDone+' / '+fcTotal;
+  var mi=fcDone===fcTotal?4:pct>=.8?3:pct>=.5?2:pct>0?1:0;
+  document.getElementById('fcSpeech').textContent=fcMsgs[mi];
+  var btn=document.getElementById('fcBtn');
+  if(fcDone>=fcTotal){btn.disabled=true;btn.style.background='#A8C9A8';btn.style.cursor='default';btn.textContent='🎉 Tüm görevler tamamlandı!';}
+  else{btn.disabled=false;btn.style.background='#5CA85E';btn.style.cursor='pointer';btn.textContent='✓ Görevi Tamamladım!';}
+}
+
+function fcDoTask(){
+  if(fcDone>=fcTotal)return;
+  fcDone++;
+  var btn=document.getElementById('fcBtn');
+  btn.style.transform='scale(0.92)';
+  setTimeout(function(){btn.style.transform='';},160);
+  var el=document.getElementById('fcp'+(fcDone-1));
+  if(el)el.innerHTML=fcMakePot(fcDone-1,true);
+  var capy=document.getElementById('fcCapy');
+  capy.style.animation='none';
+  requestAnimationFrame(function(){requestAnimationFrame(function(){capy.style.animation='capyBounce .7s ease';});});
+  fcUpdateUI();
+  if(fcDone===fcTotal)setTimeout(fcCelebrate,500);
+}
+
+function fcCelebrate(){
+  var box=document.getElementById('fcConfetti');
+  var cols=['#FF9080','#FFD700','#6BBF74','#7EC8E3','#FF8C00','#F4A0C0','#A78BFA'];
+  for(var i=0;i<40;i++){
+    var el=document.createElement('div');
+    var sz=5+Math.random()*9,dur=1.8+Math.random()*1.5,delay=Math.random()*2;
+    el.style.cssText='position:absolute;top:-20px;left:'+(5+Math.random()*90)+'%;width:'+sz.toFixed(0)+'px;height:'+sz.toFixed(0)+'px;background:'+cols[i%cols.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';animation:confettiFall '+dur.toFixed(1)+'s '+delay.toFixed(1)+'s ease-in forwards';
+    box.appendChild(el);
+  }
+  document.getElementById('fcCapy').style.animation='capyBounce .5s ease infinite';
+  document.getElementById('fcSub').textContent='🌸 Tüm görevler tamamlandı! Harikasın! 🌸';
+}
+
+function fcToggleTeacher(){
+  var p=document.getElementById('fcTeacher');
+  p.style.display=p.style.display==='none'?'block':'none';
+}
+
+function fcApply(){
+  var v=parseInt(document.getElementById('fcTaskN').value)||5;
+  fcTotal=Math.max(1,Math.min(10,v));
+  fcDone=0;
+  fcInitPlants();fcClearUI();fcRenderPots();fcUpdateUI();
+  document.getElementById('fcTeacher').style.display='none';
+}
+
+function fcReset(){
+  fcDone=0;fcClearUI();fcRenderPots();fcUpdateUI();
+}
+
+function fcInitPlants(){
+  fcAssigned=[];
+  for(var i=0;i<fcTotal;i++)fcAssigned.push(fcPlantTypes[i%fcPlantTypes.length]);
+}
+
+function fcClearUI(){
+  document.getElementById('fcCapy').style.animation='';
+  document.getElementById('fcConfetti').innerHTML='';
+  document.getElementById('fcSub').textContent='Görevlerin seni bekliyor!';
+}
+
+fcInitPlants();fcRenderPots();fcUpdateUI();
+</script>
